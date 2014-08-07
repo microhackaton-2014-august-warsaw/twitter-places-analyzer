@@ -48,8 +48,7 @@ uploadArchives {
     }
 }
 
-task deployToAws << {
-    dependsOn uploadArchives
+task deployToAws(dependsOn: uploadArchives) << {    
     String json = """{"artifactId": "${project.name}", "groupId": "$artifactGroupId","version": "$currentVersion", 
                      "jvmParams": "-Dspring.profiles.active=prod -Dserver.port=$serverPort -Dservice.resolver.url=zookeeper.microhackathon.pl:2181"}"""
     println "Sending the following json [$json]"
