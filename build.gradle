@@ -37,11 +37,6 @@ ext {
     zookeeperMockPort = 18081
 }
 
-System.properties['ARTIFACT_ID'] = project.name 
-System.properties['GROUP_ID'] = artifactGroupId
-System.properties['VERSION'] = currentVersion
-System.properties['PORT'] = serverPort
-
 uploadArchives {
     repositories.mavenDeployer {
         repository(url: "http://nexus.microhackathon.pl/content/repositories/releases/") {
@@ -51,6 +46,14 @@ uploadArchives {
         pom.artifactId = project.name
         pom.groupId = artifactGroupId
     }
+}
+
+task deployToAws << {
+    dependsOn uploadArchives
+    String json = """{"artifactId": "${project.name}", "groupId": "$artifactGroupId","version": "$currentVersion", 
+                     "jvmParams": "-Dspring.profiles.active=prod -Dserver.port=$serverPort -Dservice.resolver.url=zookeeper.microhackathon.pl:2181"}"""
+    println "Sending the following json [$json]"
+    new groovyx.net.http.HTTPBuilder('http://54.73.40.79:18081/deploy').post([body: json, headers: ['Content-Type': 'application/json']])
 }
 
 task addHashFile << {
