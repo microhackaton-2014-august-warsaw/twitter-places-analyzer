@@ -1,2 +1,0 @@
-# /bin/sh
-curl -XPOST -H "Content-Type: application/json" -d '{"artifactId": "$ARTIFACT_ID", "groupId": "$GROUP_ID","version": "$VERSION", "jvmParams": "-Dspring.profiles.active=prod -Dserver.port=$PORT -Dservice.resolver.url=zookeeper.microhackathon.pl:2181"}' http://54.73.40.79:18081/deploy
