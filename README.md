@@ -6,6 +6,11 @@ Twitter places analyzer, searches through tweets for places. Then analyzers send
 INPUT
 -----------------
 
+Accepted Content-Type:
+```
+application/vnd.com.ofg.twitter-places-analyzer.v1+json
+```
+
 Hit *PUT* at: 
 
 ```
