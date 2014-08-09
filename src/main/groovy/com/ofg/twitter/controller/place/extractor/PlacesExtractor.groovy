@@ -23,7 +23,7 @@ class PlacesExtractor {
         Map<String, Optional<Place>> foundPlaces = new ConcurrentHashMap<>()    
         def parsedTweets = new JsonSlurper().parseText(tweets)
         GParsPool.withPool {
-            parsedTweets.eachParallel { foundPlaces << appendExtractedTweet(it) }                 
+            parsedTweets?.eachParallel { foundPlaces << appendExtractedTweet(it) }
         }
         analyzedTweetsMeter.mark(foundPlaces.size())
         return foundPlaces
