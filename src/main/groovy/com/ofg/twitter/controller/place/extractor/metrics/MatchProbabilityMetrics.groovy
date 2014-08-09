@@ -18,7 +18,7 @@ class MatchProbabilityMetrics {
 
     private void registerProbabilityMetrics(MetricRegistry metricRegistry) {
         PlaceResolutionProbability.values().each { probability ->
-            probabilityMeters[probability] = metricRegistry.meter("twitter.places.analyzed.probability.$probability")
+            probabilityMeters[probability] = metricRegistry.meter("twitter.places.analyzed.match.probability.$probability")
         }
     }
 }
