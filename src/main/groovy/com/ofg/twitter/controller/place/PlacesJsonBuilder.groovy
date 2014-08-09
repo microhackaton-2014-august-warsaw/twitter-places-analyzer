@@ -7,32 +7,32 @@ import groovy.transform.TypeChecked
 class PlacesJsonBuilder {
 
     String buildPlacesJson(long pairId, Map<String, Optional<Place>> places) {
-        return """[
-                       ${places.collect { String tweetId, Optional<Place> place ->
+        return """{
+                        "pairId" : $pairId,
+                        "origin" : "twitter",
+                        "places" : [${places.collect { String tweetId, Optional<Place> place ->
                             
-                            return new SimpleTemplateEngine().createTemplate(JSON_RESPONSE_TEMPLATE)
+                            return new SimpleTemplateEngine().createTemplate(JSON_PLACES_RESPONSE_TEMPLATE)
                             .make([pairId: pairId,
                                    tweetId : tweetId,
                                    place: place])
                             .toString()
-                        }.join(',')}
-                   ]""".toString()
+                        }.join(',')}]
+                   }"""
     }
 
 
-    private static final String JSON_RESPONSE_TEMPLATE = '''
+    private static final String JSON_PLACES_RESPONSE_TEMPLATE = '''
                 {
-                    "pairId" : $pairId,
-                    "origin" : "twitter",
                     "tweetId" : "$tweetId"
                     <% if (place.present) { %> 
                         ,"place" :
                         {
                             "name":"${place.get().placeDetails.name}",
-                            "countryCode": "${place.get().placeDetails.countryCode}",
-                            "origin" : "${place.get().placeResolutionOrigin}"
+                            "countryCode": "${place.get().placeDetails.countryCode}"
                         },
                         "probability" : "${place.get().placeResolutionProbability}",
+                        "origin" : "${place.get().placeResolutionOrigin}"
                     <% } %>
                 }
                 '''

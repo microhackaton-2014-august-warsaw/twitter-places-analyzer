@@ -31,20 +31,21 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
             mockMvc.perform(put("$ROOT_PATH/$PAIR_ID").contentType(TWITTER_PLACES_ANALYZER_MICROSERVICE_V1).content("[$tweet]"))
                    .andExpect(status().isOk())
         then: "user's location (place) will be extracted from that section"
-            await().atMost(5, SECONDS).until({ wireMock.verifyThat(postRequestedFor(COLLERATOR_URL_WITH_PAIR_ID).withRequestBody(equalToJson('''
-                                                                        [{
-                                                                            "pairId" : 1,
-                                                                            "origin" : "twitter",
-                                                                            "tweetId" : "492967299297845248",
-                                                                            "place" :
-                                                                            {
-                                                                                "name":"Washington",
-                                                                                "countryCode": "US",
-                                                                                "origin" : "twitter_place_section"
-                                                                            },
-                                                                            "probability" : "2",
-                                                                        }]
-                                                                        ''')))})
+        await().atMost(1, SECONDS).until({ wireMock.verifyThat(postRequestedFor(COLLERATOR_URL_WITH_PAIR_ID).withRequestBody(equalToJson('''
+                    {
+                        "pairId" : 1,
+                        "origin" : "twitter",
+                        "places" :[{
+                            "tweetId" : "492967299297845248",
+                            "place" : {
+                                "name":"Washington",
+                                "countryCode": "US"
+                            },
+                             "probability" : "2",
+                             "origin" : "twitter_place_section"
+                        }]
+                    }
+                    ''')))})
     }
 
     def "should find a place by verifying tweet's coordinates"() {
@@ -56,20 +57,22 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
             mockMvc.perform(put("$ROOT_PATH/$PAIR_ID").contentType(TWITTER_PLACES_ANALYZER_MICROSERVICE_V1).content("[$tweet]"))
                     .andExpect(status().isOk())
         then: "user's location (place) will be extracted from that section"
-            await().atMost(5, SECONDS).until({ wireMock.verifyThat(postRequestedFor(COLLERATOR_URL_WITH_PAIR_ID).withRequestBody(equalToJson('''
-                                                                            [{
-                                                                                    "pairId" : 1,
-                                                                                    "origin" : "twitter",
-                                                                                    "tweetId" : "492961315070439424",
-                                                                                    "place" :
-                                                                                    {
-                                                                                        "name":"Tappahannock",
-                                                                                        "countryCode": "US",
-                                                                                        "origin" : "twitter_coordinates_section"
-                                                                                    },
-                                                                                    "probability" : "2",
-                                                                                }]
-                                                                            ''')))})            
+        await().atMost(1, SECONDS).until({ wireMock.verifyThat(postRequestedFor(COLLERATOR_URL_WITH_PAIR_ID).withRequestBody(equalToJson('''
+                        {
+                                "pairId" : 1,
+                                "origin" : "twitter",
+                                "places" : [{
+                                    "tweetId" : "492961315070439424",
+                                    "place" : {
+                                        "name":"Tappahannock",
+                                        "countryCode": "US",
+                                    },
+                                    "probability" : "2",
+                                    "origin" : "twitter_coordinates_section"
+                                }
+                                ]
+                            }
+                        ''')))})
     }
 
     // http://api.openweathermap.org/data/2.5/weather?q=London
