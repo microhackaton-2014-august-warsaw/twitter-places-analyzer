@@ -22,16 +22,17 @@ class PlacesJsonBuilder {
 
     private static final String JSON_RESPONSE_TEMPLATE = '''
                 {
-                    "pair_id" : $pairId,
-                    "tweet_id" : "$tweetId"
+                    "pairId" : $pairId,
+                    "origin" : "twitter",
+                    "tweetId" : "$tweetId"
                     <% if (place.present) { %> 
                         ,"place" :
                         {
                             "name":"${place.get().placeDetails.name}",
-                            "country_code": "${place.get().placeDetails.countryCode}"
+                            "countryCode": "${place.get().placeDetails.countryCode}",
+                            "origin" : "${place.get().placeResolutionOrigin}"
                         },
                         "probability" : "${place.get().placeResolutionProbability}",
-                        "origin" : "${place.get().placeResolutionOrigin}"
                     <% } %>
                 }
                 '''

@@ -33,15 +33,16 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
         then: "user's location (place) will be extracted from that section"
             await().atMost(5, SECONDS).until({ wireMock.verifyThat(postRequestedFor(COLLERATOR_URL_WITH_PAIR_ID).withRequestBody(equalToJson('''
                                                                         [{
-                                                                            "pair_id" : 1,
-                                                                            "tweet_id" : "492967299297845248",
+                                                                            "pairId" : 1,
+                                                                            "origin" : "twitter",
+                                                                            "tweetId" : "492967299297845248",
                                                                             "place" :
                                                                             {
                                                                                 "name":"Washington",
-                                                                                "country_code": "US"
+                                                                                "countryCode": "US",
+                                                                                "origin" : "twitter_place_section"
                                                                             },
                                                                             "probability" : "2",
-                                                                            "origin" : "twitter_place_section"
                                                                         }]
                                                                         ''')))})
     }
@@ -57,15 +58,16 @@ class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
         then: "user's location (place) will be extracted from that section"
             await().atMost(5, SECONDS).until({ wireMock.verifyThat(postRequestedFor(COLLERATOR_URL_WITH_PAIR_ID).withRequestBody(equalToJson('''
                                                                             [{
-                                                                                    "pair_id" : 1,
-                                                                                    "tweet_id" : "492961315070439424",
+                                                                                    "pairId" : 1,
+                                                                                    "origin" : "twitter",
+                                                                                    "tweetId" : "492961315070439424",
                                                                                     "place" :
                                                                                     {
                                                                                         "name":"Tappahannock",
-                                                                                        "country_code": "US"
+                                                                                        "countryCode": "US",
+                                                                                        "origin" : "twitter_coordinates_section"
                                                                                     },
                                                                                     "probability" : "2",
-                                                                                    "origin" : "twitter_coordinates_section"
                                                                                 }]
                                                                             ''')))})            
     }
